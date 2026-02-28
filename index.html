@@ -29,6 +29,7 @@
         padding: 20px 22px;
         width: 360px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        margin-bottom: 20px;
     }
     h1 {
         margin: 0 0 4px;
@@ -45,7 +46,7 @@
         display: block;
         margin-bottom: 4px;
     }
-    input, select {
+    input, select, textarea {
         width: 100%;
         padding: 9px 10px;
         border-radius: 6px;
@@ -54,7 +55,7 @@
         color: #e6edf3;
         font-size: 14px;
     }
-    input:focus, select:focus {
+    input:focus, select:focus, textarea:focus {
         outline: 1px solid var(--mc-green);
         border-color: var(--mc-green);
     }
@@ -87,6 +88,7 @@
 </head>
 <body>
 
+<!-- STACK CALCULATOR -->
 <div class="card">
     <h1>Minecraft Stack Calc</h1>
     <div class="subtitle">Enter items → pick stack size → get stacks + leftovers.</div>
@@ -110,7 +112,18 @@
     <div class="muted">Example: 65 with 64 → 1 stack + 1 item.</div>
 </div>
 
+<!-- NOTES BOX -->
+<div class="card">
+    <h1>Notes</h1>
+    <textarea id="notesBox" placeholder="Write anything here..." 
+              style="height:150px; resize: vertical;"></textarea>
+
+    <button onclick="saveNotes()">Save Notes</button>
+    <div class="muted">Your notes stay saved in your browser.</div>
+</div>
+
 <script>
+// Stack Calculator
 function calcStacks() {
     const amount = parseInt(document.getElementById("amount").value, 10);
     const stackSize = parseInt(document.getElementById("stackType").value, 10);
@@ -131,6 +144,17 @@ function calcStacks() {
 
     resultDiv.textContent = text;
 }
+
+// Notes Save/Load
+function saveNotes() {
+    const text = document.getElementById("notesBox").value;
+    localStorage.setItem("mcNotes", text);
+}
+
+window.onload = () => {
+    const saved = localStorage.getItem("mcNotes");
+    if (saved) document.getElementById("notesBox").value = saved;
+};
 </script>
 
 </body>
