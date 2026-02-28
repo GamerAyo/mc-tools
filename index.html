@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Minecraft Stack Calculator</title>
+<style>
+    :root {
+        --mc-green: #3ba55c;
+        --mc-dark: #0d1117;
+        --mc-panel: #161b22;
+        --mc-border: #30363d;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--mc-dark);
+        color: #e6edf3;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        padding: 32px 16px;
+    }
+    .card {
+        background: var(--mc-panel);
+        border: 1px solid var(--mc-border);
+        border-radius: 12px;
+        padding: 20px 22px;
+        width: 360px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    h1 {
+        margin: 0 0 4px;
+        font-size: 22px;
+    }
+    .subtitle {
+        font-size: 12px;
+        color: #8b949e;
+        margin-bottom: 16px;
+    }
+    label {
+        font-size: 13px;
+        margin-top: 10px;
+        display: block;
+        margin-bottom: 4px;
+    }
+    input, select {
+        width: 100%;
+        padding: 9px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--mc-border);
+        background: #0d1117;
+        color: #e6edf3;
+        font-size: 14px;
+    }
+    input:focus, select:focus {
+        outline: 1px solid var(--mc-green);
+        border-color: var(--mc-green);
+    }
+    button {
+        width: 100%;
+        margin-top: 14px;
+        padding: 10px;
+        border-radius: 6px;
+        border: none;
+        background: var(--mc-green);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    button:hover {
+        filter: brightness(1.05);
+    }
+    #result {
+        margin-top: 16px;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    .muted {
+        color: #8b949e;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Minecraft Stack Calc</h1>
+    <div class="subtitle">Enter items → pick stack size → get stacks + leftovers.</div>
+
+    <label for="amount">Item amount</label>
+    <input type="number" id="amount" placeholder="e.g. 65">
+
+    <label for="stackType">Stack size</label>
+    <select id="stackType">
+        <option value="64">64 (normal items)</option>
+        <option value="16">16 (ender pearls, snowballs, etc.)</option>
+        <option value="1">1 (unstackable items)</option>
+        <option value="32">32 (custom)</option>
+        <option value="8">8 (custom)</option>
+        <option value="4">4 (custom)</option>
+    </select>
+
+    <button onclick="calcStacks()">Calculate</button>
+
+    <div id="result"></div>
+    <div class="muted">Example: 65 with 64 → 1 stack + 1 item.</div>
+</div>
+
+<script>
+function calcStacks() {
+    const amount = parseInt(document.getElementById("amount").value, 10);
+    const stackSize = parseInt(document.getElementById("stackType").value, 10);
+    const resultDiv = document.getElementById("result");
+
+    if (isNaN(amount) || amount < 0) {
+        resultDiv.textContent = "Please enter a valid non-negative number of items.";
+        return;
+    }
+
+    const fullStacks = Math.floor(amount / stackSize);
+    const leftover = amount % stackSize;
+
+    let text = `Full stacks: ${fullStacks}`;
+    text += leftover > 0
+        ? ` • Leftover items: ${leftover}`
+        : ` • No leftover items.`;
+
+    resultDiv.textContent = text;
+}
+</script>
+
+</body>
+</html>
